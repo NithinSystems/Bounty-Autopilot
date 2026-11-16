@@ -1,0 +1,6 @@
+{
+  "repository_url": "https://github.com/OWNER/REPOSITORY",
+  "baseline_ref": "<REPLACE_WITH_FULL_40_CHARACTER_COMMIT_SHA>",
+  "patched_ref": "<REPLACE_WITH_FULL_40_CHARACTER_COMMIT_SHA>",
+  "bounty_id": "sample-bounty-001"
+}
