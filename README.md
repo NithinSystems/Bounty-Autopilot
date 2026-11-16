@@ -6,6 +6,10 @@
 
 This archive packages the part of Bounty Autopilot that could be verified from the accessible project source: the **trusted GitHub evidence collector**. It is not the complete bounty-discovery product.
 
+## Manual automation starter
+
+An [MIT-licensed experimental n8n starter](community-template/README.md) is available for GitHub search, an OpenAI-compatible API and Telegram. It imports successfully, but has not been tested with live credentials and is not the complete product.
+
 ## Use with your AI assistant
 
 Start with the [manual AI assistant guide](docs/USE_WITH_AI.md) and [research prompt](docs/AGENT_PROMPT.md). This provides a review process in ChatGPT, Claude, OpenCode or another assistant; it does not install an integration or enable automatic discovery.
@@ -23,8 +27,8 @@ Start with the [manual AI assistant guide](docs/USE_WITH_AI.md) and [research pr
 - Production-ready n8n discovery workflows. Experimental inactive GitHub and Algora-via-GitHub examples are in [experimental/discovery](experimental/discovery/README.md).
 - The live Mission Control dashboard or its backend.
 - A production-ready multi-platform discovery system.
-- AI opportunity scoring or an LLM configuration.
-- Telegram notifications.
+- Production-tested AI opportunity scoring. An experimental starter is available separately.
+- A production-tested Telegram notification integration. An experimental starter is available separately.
 - A solution-building agent.
 - Automatic claims, comments, contact, pushes, pull requests, or submissions.
 
