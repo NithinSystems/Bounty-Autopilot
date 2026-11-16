@@ -1,4 +1,4 @@
-import json, subprocess, tempfile, unittest
+import json, subprocess, sys, tempfile, unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,7 +16,7 @@ class EvidenceTests(unittest.TestCase):
     def check(self, doc):
         with tempfile.TemporaryDirectory() as td:
             path=Path(td)/'evidence.json'; path.write_text(json.dumps(doc))
-            return subprocess.run(['python3',str(VALIDATOR),str(path)],capture_output=True,text=True)
+            return subprocess.run([sys.executable,str(VALIDATOR),str(path)],capture_output=True,text=True)
     def test_valid(self): self.assertEqual(self.check(valid_doc()).returncode,0)
     def test_empty_suite_blocked(self):
         d=valid_doc(); d['baseline']['test_count']=d['patched']['test_count']=0
