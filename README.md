@@ -6,6 +6,10 @@
 
 This archive packages the part of Bounty Autopilot that could be verified from the accessible project source: the **trusted GitHub evidence collector**. It is not the complete bounty-discovery product.
 
+## Use with your AI assistant
+
+Start with the [manual AI assistant guide](docs/USE_WITH_AI.md) and [research prompt](docs/AGENT_PROMPT.md). This provides a review process in ChatGPT, Claude, OpenCode or another assistant; it does not install an integration or enable automatic discovery.
+
 ## What is actually included
 
 - A manually triggered GitHub Actions workflow for verifying a proposed patch against an immutable baseline commit.
