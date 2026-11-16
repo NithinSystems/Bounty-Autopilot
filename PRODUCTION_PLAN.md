@@ -33,3 +33,10 @@ Status: development in progress. This document is not a completion claim.
 ## Current verification
 
 The tracker migration and history tests use local SQLite fixtures. They do not prove n8n, platform, AI, Telegram, MCP, or cloud integration.
+
+## GitHub-only increment
+
+- Implemented read-only GitHub search to tracker import with source observations and advertised reward excerpts in `community-template/github_sync.py`. Two live read-only runs in a separate test database returned 100 inserts then 100 updates. This verifies search and deduplication for that snapshot only.
+- Added conservative, fixture-tested stored-observation checks in `github_verify.py`. Funding, eligibility and claim status remain unknown; this does not refresh an issue live.
+- The n8n workflow has not been connected to the tracker. AI scoring, Telegram, least-privilege approval, isolated coding, evidence integration and lifecycle end-to-end testing remain outstanding.
+- The prior automatic-review rejection does not identify an exact node, permission or payload. The recorded details and safe constraints are in `community-template/GITHUB_DEVELOPMENT.md`.
