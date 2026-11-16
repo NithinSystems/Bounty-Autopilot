@@ -5,7 +5,8 @@ from urllib.parse import urlsplit, urlunsplit
 STATES = ("discovered","verification_pending","verified","eligibility_approved","selected",
           "in_progress","testing","evidence_ready","awaiting_approval","submitted","under_review",
           "accepted","rejected","payment_pending","paid","cancelled",
-          "reviewing","building","ready_for_review")
+          "reviewing","building","ready_for_review","scored","reviewed","approved",
+          "rejected_after_submission","payment_confirmed")
 
 def canonical_url(url):
     u=urlsplit(url.strip())

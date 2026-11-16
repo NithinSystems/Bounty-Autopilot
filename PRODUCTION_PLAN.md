@@ -40,3 +40,7 @@ The tracker migration and history tests use local SQLite fixtures. They do not p
 - Added conservative, fixture-tested stored-observation checks in `github_verify.py`. Funding, eligibility and claim status remain unknown; this does not refresh an issue live.
 - The n8n workflow has not been connected to the tracker. AI scoring, Telegram, least-privilege approval, isolated coding, evidence integration and lifecycle end-to-end testing remain outstanding.
 - The prior automatic-review rejection does not identify an exact node, permission or payload. The recorded details and safe constraints are in `community-template/GITHUB_DEVELOPMENT.md`.
+
+## Increment 2 local prototype
+
+Added local deterministic assessment, limited tracker event synchronization, a minimal unsent notification outbox, and self-declared local decision records. SQLite fixture tests cover duplicate assessments, missing reward, expired and suspicious candidates, failed notifications and rejected decisions. This is not AI scoring, an authenticated approval system, an n8n integration or live Telegram delivery. Earlier automatic-review rejection remains unresolved at the precise node/payload level; do not bypass it. See `community-template/GITHUB_DEVELOPMENT.md`.

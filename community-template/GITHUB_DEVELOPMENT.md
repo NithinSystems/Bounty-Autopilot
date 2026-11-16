@@ -24,3 +24,31 @@ The `github_verify.verify(db, url)` function stores a separate verification obse
 ## Approval review investigation
 
 The recorded rejection stated that executing the imported Algora discovery workflow could send an external Telegram notification or disclose workflow data. The review did not identify a specific node, permission or exact data flow. Do not infer the precise cause or rerun the rejected action by another route. The workflow's connection to Telegram has not been demonstrated. Future integration must separately document the target workflow graph, credential permissions, payload and human approval, and use an authorized test recipient for a live message.
+
+## Increment 2: local assessment and audit prototype
+
+`assessment.py` adds SQLite tables `assessments`, `approval_decisions` and `notification_outbox` using CREATE TABLE IF NOT EXISTS. Existing opportunity and event tables are preserved. An assessment moves a discovered tracker record to scored once, records an assessment-sourced tracker event, and deduplicates identical assessment and outbox events. Verification observations may still accumulate on repeated assessments.
+
+The score is a **local deterministic preliminary heuristic**, not AI. Its factors explicitly label unknown complexity, repository activity, eligibility, funding, claim status and deadline impact. No score establishes funded or eligible status. Threshold defaults to 60. The outbox contains only URL, score, confidence and generic reasons. Nothing sends or polls this outbox; failed and uncertain deliveries are recorded locally and are not retried automatically.
+
+Approval records include event ID, candidate URL, proposed action, decision, self-declared approver, evidence text and UTC timestamp. These are local audit records only: the approver is not authenticated, and recording approval grants no authority and triggers no action. Do not put secrets or private data in evidence fields. No code execution or external submission is implemented.
+
+From PowerShell in `community-template`, after syncing candidates, run tests:
+
+```powershell
+python -m unittest discover -s . -p "test_*.py" -v
+```
+
+To assess an existing URL, substitute your own URL:
+
+```powershell
+python -c "import tracker,assessment; d=tracker.connect('bounty-tracker.sqlite'); print(assessment.assess(d,'https://github.com/example/repo/issues/1')); d.close()"
+```
+
+Test categories: SQLite in-memory fixtures and mocked GitHub errors only. No n8n workflow was imported or executed in this increment; no live AI, Telegram or approval authentication test was performed.
+
+### Previous approval rejection investigation
+
+The recorded decision rejected execution of the imported Algora discovery workflow, citing a potential Telegram notification or workflow-data disclosure. The sanitized isolated copy contains schedule, manual trigger, disabled webhook, GitHub HTTP request, local gate/ingestion HTTP requests, condition and no-op nodes; it has no Telegram node or saved credential references. This establishes the visible copy's node types only. The review did not specify the exact rejected node, permission, destination or payload, so its cause remains unknown. We did not retry the rejected action. Existing n8n workflows and credentials were not modified.
+
+**Blocked:** AI scoring, authenticated approval, n8n integration, Telegram delivery/retry and live end-to-end tests remain unimplemented. Do not expose this prototype to a network or use the local audit records to authorize execution.
