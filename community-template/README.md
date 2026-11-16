@@ -48,10 +48,11 @@ Install Python 3 and open a terminal in the `community-template` folder:
 ```bash
 python tracker.py add https://github.com/example/repo/issues/1 "Example task"
 python tracker.py list
+python tracker.py history https://github.com/example/repo/issues/1
 python tracker.py update https://github.com/example/repo/issues/1 reviewing --note "Checking eligibility"
 ```
 
-Available states: discovered, reviewing, building, ready_for_review, submitted, accepted, rejected and paid. This is a **manual, local** tracker: it is not connected to the n8n workflow or platform accounts. Re-adding the exact same URL is ignored. Statuses and payment notes are user-reported, not independently verified; don't store secrets in notes. The database `bounty-tracker.sqlite` stays on your machine and must be backed up by you.
+Available states include discovered, verification_pending, verified, eligibility_approved, selected, in_progress, testing, evidence_ready, awaiting_approval, submitted, under_review, accepted, rejected, payment_pending, paid and cancelled. Legacy states remain supported. This is a **manual, local** tracker: it is not connected to the n8n workflow or platform accounts. GitHub URLs are normalized for case, trailing slash and tracking query parameters; legacy database entries remain readable. Local status changes are recorded in history. Existing records do not acquire past history retroactively. Statuses and payment notes are user-reported, not independently verified; don't store secrets in notes. The database `bounty-tracker.sqlite` stays on your machine and must be backed up by you.
 
 ## Setup prompt for your coding assistant
 
