@@ -1,3 +1,5 @@
+![Bounty Autopilot by NithinSystems](assets/bounty-autopilot-cover.jpg)
+
 # NithinSystems — Bounty Autopilot Community Edition
 
 > **Release-candidate draft — NOT READY FOR PUBLIC RELEASE**
