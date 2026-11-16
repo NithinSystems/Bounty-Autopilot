@@ -41,6 +41,18 @@ The default URL is OpenAI's API. An API account/key and API billing or credits a
 - Workflow executions may contain issue text and AI output; manage retention and access in n8n.
 - If any credential is exposed, revoke and replace it.
 
+## Optional: track opportunities locally
+
+Install Python 3 and open a terminal in the `community-template` folder:
+
+```bash
+python tracker.py add https://github.com/example/repo/issues/1 "Example task"
+python tracker.py list
+python tracker.py update https://github.com/example/repo/issues/1 reviewing --note "Checking eligibility"
+```
+
+Available states: discovered, reviewing, building, ready_for_review, submitted, accepted, rejected and paid. This is a **manual, local** tracker: it is not connected to the n8n workflow or platform accounts. Re-adding the exact same URL is ignored. Statuses and payment notes are user-reported, not independently verified; don't store secrets in notes. The database `bounty-tracker.sqlite` stays on your machine and must be backed up by you.
+
 ## Setup prompt for your coding assistant
 
 > Help me set up the Bounty Autopilot manual starter from this repository. First ask whether I use n8n Cloud or self-hosted n8n and which OpenAI-compatible provider I selected. Inspect the current official n8n and provider docs, then guide me one step at a time. Do not ask me to paste secrets into chat. Explain that executing the workflow calls the AI API and sends Telegram messages, and ask me to run the first test myself. Do not expose a local n8n instance to the internet without HTTPS and authentication.
