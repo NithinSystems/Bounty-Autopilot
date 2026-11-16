@@ -125,6 +125,26 @@
           "appendAttribution": false
         }
       }
+    },
+    {
+      "id": "77446941-1ace-418d-b111-7a2babc0eed5",
+      "name": "Daily schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        200
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 24
+            }
+          ]
+        }
+      }
     }
   ],
   "connections": {
@@ -177,6 +197,17 @@
         [
           {
             "node": "Telegram alert - configure bot and chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Daily schedule": {
+      "main": [
+        [
+          {
+            "node": "Search GitHub",
             "type": "main",
             "index": 0
           }

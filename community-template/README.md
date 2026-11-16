@@ -1,6 +1,6 @@
 # Bounty Autopilot — manual starter
 
-**Preview:** A small, manually triggered n8n workflow. Searches GitHub issues with the bounty label, sends up to three public issue excerpts to your selected OpenAI-compatible API, and sends its reviews to your Telegram bot. This is not the full original Bounty Autopilot. It has not been verified with live provider or Telegram credentials.
+**Preview:** A small n8n workflow with manual and daily triggers. It imports inactive. Searches GitHub issues with the bounty label, sends up to three public issue excerpts to your selected OpenAI-compatible API, and sends its reviews to your Telegram bot. This is not the full original Bounty Autopilot. It has not been verified with live provider or Telegram credentials.
 
 ## What you need
 
@@ -28,7 +28,7 @@
 2. Open **AI review**. Set its URL to your provider's HTTPS chat-completions endpoint and replace `REPLACE_WITH_YOUR_MODEL` in the JSON body with a model your provider supports.
 3. Create an n8n **Header Auth** credential. For a provider using bearer authentication, set header name `Authorization` and value `Bearer YOUR_API_KEY`. Select the credential in the AI node. Do not place the key in the workflow JSON or share exported credentials.
 4. In the Telegram node select your Telegram credential and replace `REPLACE_WITH_YOUR_CHAT_ID` with your private numeric chat ID.
-5. Use **Execute workflow** once. This sends up to three excerpts to your AI provider and up to three messages to your Telegram chat. Check API pricing and quotas first. A model error stops the run; review the node error and provider settings.
+5. Use **Execute workflow** once. This sends up to three excerpts to your AI provider and up to three messages to your Telegram chat. Check API pricing and quotas first. A model error stops the run; review the node error and provider settings. After a successful test, activate the workflow only if you want it to run every 24 hours. Set the n8n workflow timezone and confirm the schedule.
 
 The default URL is OpenAI's API. An API account/key and API billing or credits are separate from any ChatGPT subscription. Compatible gateways may be used with their own endpoint, key and model. Claude's native Messages API has a different schema: this template does **not** directly support it. Use a compatible gateway that explicitly supports Claude, or adapt the node before use. Local/open-source models need an accessible compatible API; `localhost` on n8n Cloud refers to n8n Cloud, not your computer.
 
@@ -36,7 +36,7 @@ The default URL is OpenAI's API. An API account/key and API billing or credits a
 
 - GitHub results are candidates, not verified paid bounties. Algora, Polar and Superteam are not integrated into this starter.
 - Results are untrusted text: verify payout, funding, rules, deadlines and eligibility yourself. AI scores are subjective.
-- This starter has no deduplication, automated schedule, long-term queue, attachments or evidence validator integration. Repeated manual runs can send duplicate messages and incur additional charges.
+- This starter has no deduplication, long-term queue, attachments or evidence validator integration. Activating it enables a 24-hour schedule, which can send duplicate messages and incur recurring charges. Keep it inactive until your manual test succeeds and you have checked your budget.
 - It does not claim, comment, submit, push code, or run security scans. Keep all external submissions under human control.
 - Workflow executions may contain issue text and AI output; manage retention and access in n8n.
 - If any credential is exposed, revoke and replace it.
