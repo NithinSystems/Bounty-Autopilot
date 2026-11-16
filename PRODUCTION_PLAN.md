@@ -44,3 +44,7 @@ The tracker migration and history tests use local SQLite fixtures. They do not p
 ## Increment 2 local prototype
 
 Added local deterministic assessment, limited tracker event synchronization, a minimal unsent notification outbox, and self-declared local decision records. SQLite fixture tests cover duplicate assessments, missing reward, expired and suspicious candidates, failed notifications and rejected decisions. This is not AI scoring, an authenticated approval system, an n8n integration or live Telegram delivery. Earlier automatic-review rejection remains unresolved at the precise node/payload level; do not bypass it. See `community-template/GITHUB_DEVELOPMENT.md`.
+
+## Local approval prototype update
+
+Added passphrase-gated local decision-recording prototype and fixture tests. This is not a complete authenticated authorization flow: direct database/code access can bypass it, and no external action verifies decisions. Telegram remains disabled and untested; the user's conditional approval requires a completed authenticated flow and an identified private test chat.

@@ -11,6 +11,7 @@ class AssessmentTests(unittest.TestCase):
  def test_idempotency_unknown_and_minimal_payload(self):
   item=issue();self.add(item)
   a=assessment.assess(self.db,item["html_url"],self.now)
+  github_sync.import_issues(self.db,[item],observed_at="2026-01-02T00:00:00+00:00")
   b=assessment.assess(self.db,item["html_url"],self.now)
   self.assertEqual(a["assessment_id"],b["assessment_id"])
   self.assertEqual(self.db.execute("select state from opportunities").fetchone()[0],"scored")

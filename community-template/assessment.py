@@ -41,7 +41,9 @@ def assess(db,url,now=None,threshold=60):
  score=max(0,min(100,40+sum(x["points"] for x in factors.values())))
  confidence="low"
  explanation="Deterministic preliminary assessment, not AI. Funding, eligibility, claim and completion time remain unknown."
- stable={"status":v["status"],"checks":checks,"factors":factors,"score":score}
+ stable_checks=json.loads(json.dumps(checks))
+ stable_checks["open"].pop("observed_at",None)
+ stable={"status":v["status"],"checks":stable_checks,"factors":factors,"score":score}
  fingerprint=hashlib.sha256(json.dumps(stable,sort_keys=True).encode()).hexdigest()
  created=(now or dt.datetime.now(dt.timezone.utc)).isoformat()
  with db:

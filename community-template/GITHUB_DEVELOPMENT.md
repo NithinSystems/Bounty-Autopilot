@@ -52,3 +52,15 @@ Test categories: SQLite in-memory fixtures and mocked GitHub errors only. No n8n
 The recorded decision rejected execution of the imported Algora discovery workflow, citing a potential Telegram notification or workflow-data disclosure. The sanitized isolated copy contains schedule, manual trigger, disabled webhook, GitHub HTTP request, local gate/ingestion HTTP requests, condition and no-op nodes; it has no Telegram node or saved credential references. This establishes the visible copy's node types only. The review did not specify the exact rejected node, permission, destination or payload, so its cause remains unknown. We did not retry the rejected action. Existing n8n workflows and credentials were not modified.
 
 **Blocked:** AI scoring, authenticated approval, n8n integration, Telegram delivery/retry and live end-to-end tests remain unimplemented. Do not expose this prototype to a network or use the local audit records to authorize execution.
+
+## Passphrase-gated local decision prototype
+
+`approval_auth.py` can create a local passphrase verifier using scrypt and records decisions only after the correct passphrase is supplied to that command. It adds the SQLite table `local_approval_credentials` without changing existing records. The passphrase is entered with hidden terminal input, not as a command-line argument.
+
+This is **not an authenticated authorization boundary**: anyone with code or write access to the database can still call the older `assessment.decide` function or alter records. No workflow or external action checks these decisions. There is no account identity verification, rate limiting, recovery mechanism or remote authorization. Do not use it to authorize Telegram, code execution, submissions or financial actions. Do not expose it to a network.
+
+In PowerShell, from `community-template`, run `python approval_auth.py --database bounty-tracker.sqlite setup` to configure it on a database you own. Back up the database and keep the passphrase private. Tests use temporary in-memory databases and do not configure a real passphrase.
+
+Unchanged candidate observations now produce the same assessment/outbox fingerprint even if their observation timestamp changes. Repeated verification observations are still stored.
+
+Live Telegram remains untested: the user authorized a test only after an authenticated approval flow is implemented and a private test chat is identified. Those conditions are not yet met.
