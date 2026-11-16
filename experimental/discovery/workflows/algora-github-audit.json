@@ -1,0 +1,282 @@
+{
+  "name": "Bounty Radar - algora-github - Phase 1",
+  "nodes": [
+    {
+      "id": "schedule",
+      "name": "Every 30 minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        -120
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "manual",
+      "name": "Run manually",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        80
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "webhook",
+      "name": "Local test webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        280
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "bounty-radar-algora-github-manual",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "disabled": true
+    },
+    {
+      "id": "Reserve-source-poll",
+      "name": "Reserve source poll",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        260,
+        0
+      ],
+      "parameters": {
+        "url": "http://127.0.0.1:8787/radar/gate",
+        "options": {
+          "timeout": 30000
+        },
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"source\": \"algora-github\"}"
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 10000
+    },
+    {
+      "id": "if",
+      "name": "Poll allowed",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        500,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "allowed",
+              "leftValue": "={{ $json.allowed }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "Read-public-GitHub-API",
+      "name": "Read public GitHub API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        0
+      ],
+      "parameters": {
+        "url": "https://api.github.com/search/issues?q=is%3Aissue+is%3Aopen+%22algora.io%22+in%3Abody&sort=updated&order=desc&per_page=100",
+        "options": {
+          "timeout": 30000,
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "json"
+            }
+          }
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Bounty-Autopilot-ReadOnly"
+            }
+          ]
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 10000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "Normalize-and-deduplicate",
+      "name": "Normalize and deduplicate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        980,
+        0
+      ],
+      "parameters": {
+        "url": "http://127.0.0.1:8787/radar/ingest",
+        "options": {
+          "timeout": 30000
+        },
+        "method": "POST",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\"source\": \"algora-github\", \"run_id\": $execution.id, \"response\": $json } }}"
+      },
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 10000
+    },
+    {
+      "id": "skip",
+      "name": "Poll skipped safely",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        720,
+        180
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "notes",
+      "name": "Read me",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        250,
+        310
+      ],
+      "parameters": {
+        "height": 250,
+        "width": 740,
+        "content": "## Phase 1: discovery only\n30-minute poll reservation and SQLite deduplication use the local store on port 8787. Public GitHub reads only. Add a GitHub credential to the API node for authenticated reads. Comments are not applicants. Rewards are unverified evidence. No AI calls, security tests, posting, claiming or submissions. Manual runs respect the same 30-minute reservation. Algora candidates are detected from GitHub issue bodies, not scraped from algora.io."
+      }
+    }
+  ],
+  "connections": {
+    "Every 30 minutes": {
+      "main": [
+        [
+          {
+            "node": "Reserve source poll",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run manually": {
+      "main": [
+        [
+          {
+            "node": "Reserve source poll",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Local test webhook": {
+      "main": [
+        [
+          {
+            "node": "Reserve source poll",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reserve source poll": {
+      "main": [
+        [
+          {
+            "node": "Poll allowed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Poll allowed": {
+      "main": [
+        [
+          {
+            "node": "Read public GitHub API",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Poll skipped safely",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read public GitHub API": {
+      "main": [
+        [
+          {
+            "node": "Normalize and deduplicate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Kolkata",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true
+  },
+  "active": false
+}

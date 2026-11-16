@@ -16,15 +16,15 @@ This archive packages the part of Bounty Autopilot that could be verified from t
 
 ## What is deliberately not included
 
-- The original n8n discovery workflows or their importable JSON export.
+- Production-ready n8n discovery workflows. Experimental inactive GitHub and Algora-via-GitHub examples are in [experimental/discovery](experimental/discovery/README.md).
 - The live Mission Control dashboard or its backend.
-- Any bounty-platform discovery adapters or live source polling.
+- A production-ready multi-platform discovery system.
 - AI opportunity scoring or an LLM configuration.
 - Telegram notifications.
 - A solution-building agent.
 - Automatic claims, comments, contact, pushes, pull requests, or submissions.
 
-The local n8n project was not reachable during this packaging run, so no n8n export has been fabricated. See [`n8n-workflow/NOT_INCLUDED.md`](n8n-workflow/NOT_INCLUDED.md).
+Recovered development examples are provided separately; they are not an installable release. See [discovery status](experimental/discovery/README.md).
 
 ## Quick start — evidence collector only
 
@@ -62,4 +62,4 @@ The workflow does not submit a bounty solution. It produces an evidence artifact
 
 Before a public launch, recover and review the original n8n workflow export, remove or disable any automatic-contact path, run a clean n8n import test, decide the project license, and complete the checklist in [`docs/RELEASE_CHECKLIST.md`](docs/RELEASE_CHECKLIST.md).
 
-**This is an incomplete preview. No original workflow or credentials were changed by this packaging work.**
+**This is an incomplete preview. Original services were not modified, and credentials are not included in the recovered workflow copies.**
